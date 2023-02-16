@@ -21,9 +21,9 @@ services:
     depends_on:
       - rabbitmq
       - postgres
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+    # volumes:
+    #   - .:/usr/src/app
+    #   - /usr/src/app/node_modules
     command: npm run start:dev  auth
 
   presence:
@@ -35,9 +35,9 @@ services:
     depends_on:
       - rabbitmq
       - postgres
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+    # volumes:
+    #   - .:/usr/src/app
+    #   - /usr/src/app/node_modules
     command: npm run start:dev presence
 
   api:
@@ -52,9 +52,9 @@ services:
       - rabbitmq
       - auth
       - presence
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+    # volumes:
+    #   - .:/usr/src/app
+    #   - /usr/src/app/node_modules
 
     command: npm run start:dev api
 

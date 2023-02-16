@@ -1,5 +1,6 @@
 import { SharedService } from '@app/shared';
-import { Controller, Get } from '@nestjs/common';
+import { JwtGuard } from '@app/shared/jwt-auth.guard';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { RmqContext } from '@nestjs/microservices/ctx-host';
 import { Ctx, MessagePattern, Payload } from '@nestjs/microservices/decorators';
 import { AuthService } from './auth.service';
@@ -14,7 +15,6 @@ export class AuthController {
     private readonly userService: UserService,
     private readonly sharedService: SharedService,
   ) {}
-  
 
   @MessagePattern({ cmd: 'delete' })
   async delete(@Ctx() context: RmqContext) {
@@ -25,7 +25,8 @@ export class AuthController {
   }
 
   @MessagePattern({ cmd: 'getAllUsers' })
-  async getUser(@Ctx() context: RmqContext) {
+  @UseGuards(JwtGuard)
+  async getUser(@Ctx() context: RmqContext, @Payload() req: Request) {
     console.log('got it1');
 
     this.sharedService.acknowledgeMessage(context);

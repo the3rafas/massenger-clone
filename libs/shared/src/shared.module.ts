@@ -1,7 +1,9 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
-import { AuthGuard } from './auth.guard';
+import { DatabaseModule } from 'libs/_common/database/database.module';
+import { JwtGuard } from './jwt-auth.guard';
 import { SharedService } from './shared.service';
 
 @Module({
@@ -9,9 +11,10 @@ import { SharedService } from './shared.service';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    DatabaseModule,
   ],
-  providers: [SharedService, AuthGuard],
-  exports: [SharedService, AuthGuard],
+  providers: [SharedService, JwtGuard],
+  exports: [SharedService, JwtGuard],
 })
 export class SharedModule {
   static regesterRmqClient(service: string, queue: string): DynamicModule {
